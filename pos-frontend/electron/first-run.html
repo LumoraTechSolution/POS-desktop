@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'self' 'unsafe-inline'" />
+    <title>Set up StoreX</title>
+    <style>
+      :root { color-scheme: light dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+      .card { width: 460px; padding: 32px; }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      .brand { color: #38bdf8; font-weight: 600; letter-spacing: 0.5px; }
+      p.lead { color: #94a3b8; font-size: 14px; line-height: 1.5; margin: 0 0 24px; }
+      label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: #94a3b8; margin: 14px 0 6px; }
+      input {
+        width: 100%;
+        padding: 11px 13px;
+        font-size: 15px;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        background: #1e293b;
+        color: #f8fafc;
+      }
+      input:focus { outline: none; border-color: #38bdf8; }
+      button {
+        margin-top: 24px;
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        background: #38bdf8;
+        color: #0f172a;
+        cursor: pointer;
+      }
+      button:disabled { opacity: 0.5; cursor: default; }
+      button.link { background: none; color: #64748b; font-weight: 400; font-size: 13px; margin-top: 10px; }
+      .error { margin-top: 16px; color: #f87171; font-size: 13px; min-height: 18px; }
+      .ok { color: #4ade80; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1><span class="brand">Store</span>X</h1>
+      <p class="lead">Welcome! Let's set up your store. This runs once on this computer.</p>
+
+      <label for="business">Business name</label>
+      <input id="business" type="text" placeholder="e.g. Main Street Store" autocomplete="off" />
+
+      <label for="email">Admin email</label>
+      <input id="email" type="email" placeholder="you@business.com" autocomplete="off" spellcheck="false" />
+
+      <label for="password">Admin password</label>
+      <input id="password" type="password" placeholder="At least 8 characters" autocomplete="off" />
+
+      <label for="confirm">Confirm password</label>
+      <input id="confirm" type="password" placeholder="Re-enter password" autocomplete="off" />
+
+      <button id="submit">Create my store</button>
+      <button id="quit" class="link">Quit</button>
+
+      <div class="error" id="error"></div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const submitBtn = $("submit");
+      const errorEl = $("error");
+
+      submitBtn.addEventListener("click", async () => {
+        errorEl.textContent = "";
+        errorEl.classList.remove("ok");
+
+        const tenantName = $("business").value.trim();
+        const adminEmail = $("email").value.trim();
+        const adminPassword = $("password").value;
+        const confirm = $("confirm").value;
+
+        if (!tenantName) { errorEl.textContent = "Please enter your business name."; return; }
+        if (adminPassword.length < 8) { errorEl.textContent = "Password must be at least 8 characters."; return; }
+        if (adminPassword !== confirm) { errorEl.textContent = "Passwords do not match."; return; }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Setting up…";
+        try {
+          await window.firstRun.submit({ tenantName, adminEmail, adminPassword });
+          errorEl.textContent = "All set! Starting StoreX…";
+          errorEl.classList.add("ok");
+          // The main process closes this window once the seed is written.
+        } catch (e) {
+          errorEl.textContent = (e && e.message) ? e.message : String(e);
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Create my store";
+        }
+      });
+
+      $("quit").addEventListener("click", () => window.firstRun.quit());
+
+      $("confirm").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") submitBtn.click();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# Electron desktop build artifacts — generated/staged locally, never committed.
+# NOTE: do NOT ignore /build — it holds the NSIS installer SOURCE (installer.nsh,
+# install-postgres.ps1, uninstall-postgres.ps1, icon.ico/png) that must be committed.
+/dist/
+/dist-electron/
+/resources/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Playwright run output (reports/screenshots/traces) — not committed; baselines live in e2e/*-snapshots/
+/test-results/
+/playwright-report/

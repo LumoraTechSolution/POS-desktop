@@ -1,0 +1,76 @@
+# Render (and most PaaS) assign the listening port via the PORT env var. Bind to
+# it so health checks reach the app; fall back to 8081 for local/other envs.
+server:
+  port: ${PORT:8081}
+
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    show-sql: false
+
+  flyway:
+    clean-disabled: true
+    # Prod loads ONLY schema migrations — no db/seed-dev, so the known-password
+    # demo accounts never reach a production database. (Activate the `demo`
+    # profile alongside `prod` if you deliberately want demo data, e.g. locally.)
+    locations: classpath:db/migration
+    # Tolerate the demo seeds being absent from prod's locations if a DB was ever
+    # migrated with them present (e.g. promoted from a demo env). Fresh prod DBs
+    # are unaffected — nothing is recorded yet.
+    ignore-migration-patterns: "*:missing"
+
+# Production logging
+# App logs at WARN to keep prod log volume manageable; bump to INFO via env var
+# (LOGGING_LEVEL_COM_LUMORA_POS=INFO) when investigating an incident.
+logging:
+  level:
+    com.lumora.pos: WARN
+    org.springframework: WARN
+    org.hibernate: WARN
+
+# Production security
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:https://yourdomain.com}
+  security:
+    cookie-secure: true
+  # Ed25519 PUBLIC key for desktop license verification (LicenseVerifier). License
+  # signing/issuance lives on the separate cloud license server — this build only
+  # verifies. In the desktop profile, application-desktop.yml overrides this value
+  # with the key baked into the JAR + Electron asar.
+  license:
+    signing:
+      public-key: ${APP_LICENSE_SIGNING_PUBLIC_KEY:MCowBQYDK2VwAyEA29diU0Ca3bFJUeNSBA8WFi+mcv+m/mworWzP8m4sJVM=}
+
+# Lock down API surface in production:
+#  - Swagger / OpenAPI off (no public schema/try-it-out console).
+#  - Actuator limited to health + info (no metrics/prometheus info leak). Re-add
+#    "prometheus" here only when scraping from a trusted/internal network.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+  show-actuator: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # Safe default for a public deploy (e.g. Render): health + info only.
+        # Self-hosted monitoring can re-add prometheus via env, since there it's
+        # scraped over a private network:
+        #   ACTUATOR_EXPOSURE=health,info,prometheus
+        include: ${ACTUATOR_EXPOSURE:health,info}

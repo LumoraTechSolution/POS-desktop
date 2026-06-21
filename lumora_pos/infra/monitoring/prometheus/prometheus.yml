@@ -1,0 +1,21 @@
+# Prometheus scrape config for Lumora POS.
+# Wired into docker-compose.yml under the `monitoring` profile.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: lumora-pos
+
+scrape_configs:
+  - job_name: lumora-pos-backend
+    metrics_path: /actuator/prometheus
+    static_configs:
+      # `backend:8081` resolves when the backend runs in compose;
+      # `host.docker.internal:8081` reaches a backend running on the host (Docker Desktop).
+      - targets: ["backend:8081", "host.docker.internal:8081"]
+        labels:
+          service: backend
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

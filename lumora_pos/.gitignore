@@ -1,0 +1,38 @@
+# Root .gitignore for Lumora POS
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local agent state — ignore everything under .claude EXCEPT shared skills.
+.claude/*
+!.claude/skills/
+.agent/
+.agents/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Dependencies & Build
+node_modules/
+backend/target/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel

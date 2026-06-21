@@ -1,0 +1,169 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "electron:tsc": "tsc -p electron && node -e \"const fs=require('fs');for(const f of ['activation.html','first-run.html'])fs.copyFileSync('electron/'+f,'dist-electron/'+f)\"",
+    "electron:dev": "cross-env NODE_ENV=development wait-on http://127.0.0.1:3000 && electron .",
+    "electron:build": "next build && npm run electron:tsc && electron-builder --win nsis --x64"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-scroll-area": "^1.2.10",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-separator": "^1.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-switch": "^1.2.6",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@sentry/nextjs": "^8.40.0",
+    "@tanstack/react-query": "^5.90.21",
+    "axios": "^1.18.0",
+    "bcryptjs": "^2.4.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.574.0",
+    "next": "14.2.35",
+    "next-themes": "^0.4.6",
+    "qz-tray": "^2.2.6",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.71.2",
+    "recharts": "^3.7.0",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.49.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^4.3.4",
+    "cross-env": "^7.0.3",
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.35",
+    "jsdom": "^25.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.lumora.pos",
+    "productName": "StoreX",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "package.json",
+      "!**/node_modules/**/*",
+      "node_modules/bcryptjs/**/*",
+      "!.next/**/*",
+      "!resources/**/*",
+      "!src/**/*",
+      "!public/**/*",
+      "!documentation/**/*",
+      "!e2e/**/*",
+      "!build/**/*",
+      "!electron/**/*",
+      "!**/*.md",
+      "!**/*.markdown",
+      "!**/*.ts",
+      "!**/*.tsx",
+      "!**/*.map",
+      "!**/*.log",
+      "!**/*.txt",
+      "!playwright.config.*",
+      "!vitest*",
+      "!sentry.*.config.*",
+      "!postcss.config.*",
+      "!tailwind.config.*",
+      "!tsconfig*",
+      "!components.json",
+      "!next.config.mjs",
+      "!next-env.d.ts",
+      "!setup-electron.*"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/backend",
+        "to": "backend",
+        "filter": [
+          "pos-backend.jar"
+        ]
+      },
+      {
+        "from": "resources/jre",
+        "to": "jre"
+      },
+      {
+        "from": "resources/web",
+        "to": "web"
+      },
+      {
+        "from": "resources/postgres-bin",
+        "to": "postgres-bin"
+      },
+      {
+        "from": "build/install-postgres.ps1",
+        "to": "install-postgres.ps1"
+      },
+      {
+        "from": "build/uninstall-postgres.ps1",
+        "to": "uninstall-postgres.ps1"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "StoreX-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "StoreX",
+      "include": "build/installer.nsh"
+    }
+  }
+}

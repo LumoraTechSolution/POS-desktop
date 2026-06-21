@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src https:" />
+    <title>Activate StoreX</title>
+    <style>
+      :root { color-scheme: light dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      .card { width: 440px; padding: 32px; }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      .brand { color: #38bdf8; font-weight: 600; letter-spacing: 0.5px; }
+      p.lead { color: #94a3b8; font-size: 14px; line-height: 1.5; margin: 0 0 24px; }
+      label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: #94a3b8; margin: 0 0 6px; }
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 16px;
+        font-family: "Cascadia Code", "Consolas", monospace;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        background: #1e293b;
+        color: #f8fafc;
+      }
+      input:focus { outline: none; border-color: #38bdf8; }
+      button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        background: #38bdf8;
+        color: #0f172a;
+        cursor: pointer;
+      }
+      button:disabled { opacity: 0.5; cursor: default; }
+      button.link { background: none; color: #64748b; font-weight: 400; font-size: 13px; margin-top: 12px; }
+      .meta { margin-top: 24px; font-size: 12px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 16px; }
+      .meta .code { font-family: monospace; color: #94a3b8; }
+      .error { margin-top: 16px; color: #f87171; font-size: 13px; min-height: 18px; }
+      .ok { color: #4ade80; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1><span class="brand">Store</span>X</h1>
+      <p class="lead" id="lead">Loading…</p>
+
+      <label for="key">License key</label>
+      <input
+        id="key"
+        type="text"
+        placeholder="LUM-XXXXX-XXXXX-XXXXX-XXXXX"
+        autocomplete="off"
+        spellcheck="false"
+        maxlength="29"
+      />
+
+      <button id="activate">Activate</button>
+      <button id="quit" class="link">Quit</button>
+
+      <div class="error" id="error"></div>
+
+      <div class="meta">
+        Computer: <span class="code" id="machine">—</span><br />
+        Device code: <span class="code" id="shortcode">—</span>
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const keyInput = $("key");
+      const activateBtn = $("activate");
+      const errorEl = $("error");
+
+      // Light formatting helper: uppercase + regroup as the user types.
+      keyInput.addEventListener("input", () => {
+        const raw = keyInput.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+        const body = raw.startsWith("LUM") ? raw.slice(3) : raw;
+        const groups = body.match(/.{1,5}/g) || [];
+        keyInput.value = ["LUM", ...groups].join("-");
+      });
+
+      async function init() {
+        try {
+          const info = await window.activation.getInfo();
+          $("lead").textContent = info.message;
+          $("machine").textContent = info.machineName;
+          $("shortcode").textContent = info.shortCode;
+        } catch (e) {
+          $("lead").textContent = "Enter your license key to activate.";
+        }
+      }
+
+      activateBtn.addEventListener("click", async () => {
+        errorEl.textContent = "";
+        errorEl.classList.remove("ok");
+        const key = keyInput.value.trim();
+        if (key.replace(/[^A-Z0-9]/g, "").length < 18) {
+          errorEl.textContent = "Please enter your full license key.";
+          return;
+        }
+        activateBtn.disabled = true;
+        activateBtn.textContent = "Activating…";
+        try {
+          await window.activation.submit(key, $("machine").textContent);
+          errorEl.textContent = "Activated! Starting StoreX…";
+          errorEl.classList.add("ok");
+          // The main process closes this window once the license is sealed.
+        } catch (e) {
+          errorEl.textContent = (e && e.message) ? e.message : String(e);
+          activateBtn.disabled = false;
+          activateBtn.textContent = "Activate";
+        }
+      });
+
+      $("quit").addEventListener("click", () => window.activation.quit());
+
+      keyInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") activateBtn.click();
+      });
+
+      init();
+    </script>
+  </body>
+</html>

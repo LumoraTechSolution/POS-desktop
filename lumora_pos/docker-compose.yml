@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: lumora-pos-db
+    environment:
+      POSTGRES_DB: lumora_pos
+      POSTGRES_USER: lumora_user
+      POSTGRES_PASSWORD: SecretPassword123!
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lumora_user -d lumora_pos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../pos-backend
+    container_name: lumora-pos-backend
+    ports:
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://database:5432/lumora_pos
+      - DB_USERNAME=lumora_user
+      - DB_PASSWORD=SecretPassword123!
+      - JWT_SECRET=ProdSecretKeyMustBeAtLeast32Characters!
+      - APP_BASE_URL=http://localhost:8081
+      # Subdomain origins (http://*.localhost:3000) are allowed so the stack can
+      # also be run as a shared-DB multi-tenant testbed (set AUTH_MODE=multi);
+      # harmless in the default single-tenant mode.
+      - ALLOWED_ORIGINS=http://localhost:3000,http://*.localhost:3000
+      - APP_SECURITY_COOKIE_SECURE=false
+      # `demo` loads the seed-dev migrations (demo tenant admin + cashier) so the
+      # local stack and e2e suite have known logins. REAL production runs `prod`
+      # ALONE, keeping those known-password accounts out of the database.
+      - SPRING_PROFILES_ACTIVE=prod,demo
+      # Local stack keeps prometheus exposed for the optional monitoring profile;
+      # public prod defaults to health,info only.
+      - ACTUATOR_EXPOSURE=health,info,prometheus
+      # Local dev/test stack: relax the per-IP login throttle so the Playwright
+      # e2e suite (many logins per run) isn't rate-limited. Production keeps the
+      # built-in default of 10 / 15 min.
+      - RATE_LIMIT_LOGIN_CAPACITY=10000
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../pos-frontend
+      args:
+        # Same-origin: empty public URL => browser hits relative /api/v1, which
+        # the Next rewrite (BACKEND_URL) proxies to the backend. This makes the
+        # backend's auth-token cookie come back first-party to the shop
+        # subdomain (e.g. badukade2.localhost:3000), so the middleware route
+        # guard can read it. Required for AUTH_MODE=multi subdomain testing.
+        NEXT_PUBLIC_API_URL: ""
+        BACKEND_URL: "http://backend:8081"
+    container_name: lumora-pos-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=
+      - BACKEND_URL=http://backend:8081
+    depends_on:
+      - backend
+
+  # Prometheus + Grafana (see docs/operations/observability.md).
+  # Disabled by default; opt in with `docker compose --profile monitoring up -d`.
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: lumora-pos-prometheus
+    profiles: ["monitoring"]
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: lumora-pos-grafana
+    profiles: ["monitoring"]
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./infra/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  # Nightly pg_dump (see docs/operations/backup-runbook.md).
+  # Disabled by default; opt in with `docker compose --profile backup up -d`.
+  db-backup:
+    build:
+      context: ./infra/backup
+    container_name: lumora-pos-db-backup
+    profiles: ["backup"]
+    environment:
+      PGHOST: database
+      PGPORT: "5432"
+      PGUSER: lumora_user
+      PGPASSWORD: SecretPassword123!
+      PGDATABASE: lumora_pos
+      BACKUP_DIR: /backups
+      # Set to e.g. `aws s3 sync /backups s3://your-bucket/<host-id>/ --delete`
+      # to push dumps off-host. Leave empty for local-only.
+      OFFSITE_SYNC_CMD: ""
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_data:

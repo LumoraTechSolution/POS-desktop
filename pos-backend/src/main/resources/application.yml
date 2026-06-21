@@ -1,0 +1,101 @@
+spring:
+  application:
+    name: lumora-pos
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# Springdoc OpenAPI (Swagger)
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: true
+
+server:
+  port: 8081
+  servlet:
+    context-path: /
+
+# Application-specific properties
+app:
+  cors:
+    allowed-origins: http://localhost:3000
+  # Tenant-resolution model for PIN login:
+  #   single (default) = one business per database (sole active tenant resolved automatically)
+  #   multi            = shared database; tenant resolved from the shop subdomain (X-Tenant-Domain)
+  auth:
+    mode: ${AUTH_MODE:single}
+  security:
+    cookie-secure: false
+    super-admin:
+      max-failed-attempts: 5
+      lockout-duration-minutes: 15
+      password-change-token-ttl-minutes: 5
+  jwt:
+    secret: ${JWT_SECRET:lumora-pos-dev-secret-key-for-local-development-only-change-in-production}
+    expiration-ms: 86400000 # 24 hours
+    refresh-expiration-ms: 604800000 # 7 days
+  # Monthly plan prices used to project MRR on the super-admin dashboard.
+  # Adjust here when finance changes the price list — no code deploy needed.
+  billing:
+    plan-prices:
+      SMALL_BUSINESS: 50
+      MEDIUM_BUSINESS: 150
+      ENTERPRISE: 500
+  # QZ Tray digital signing (silent ESC/POS printing). Leave blank to run unsigned
+  # (QZ shows a one-time per-machine trust prompt). Supply as env-var secrets in prod.
+  qz:
+    certificate: ${QZ_CERTIFICATE:}
+    private-key: ${QZ_PRIVATE_KEY:}
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      sla:
+        http.server.requests: 50ms,200ms,500ms,1s,2s
+
+# Logging
+logging:
+  level:
+    com.lumora.pos: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN

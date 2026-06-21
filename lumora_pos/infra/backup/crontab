@@ -1,0 +1,4 @@
+# minute hour day-of-month month day-of-week  command
+0 3 * * *   /scripts/backup.sh daily
+0 4 * * 0   /scripts/backup.sh weekly
+0 5 1 * *   /scripts/backup.sh monthly

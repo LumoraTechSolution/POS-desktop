@@ -1,0 +1,5 @@
+ALTER TABLE sales ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE returns ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN NOT NULL DEFAULT FALSE;
+
+CREATE INDEX IF NOT EXISTS idx_sales_deleted ON sales(is_deleted);
+CREATE INDEX IF NOT EXISTS idx_returns_deleted ON returns(is_deleted);

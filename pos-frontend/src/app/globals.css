@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  /* Light theme — back-office / well-lit office use */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 95% 44%;
+    --warning-foreground: 0 0% 100%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
+    --chart-1: 41 100% 45%;
+    --chart-2: 202 73% 63%;
+    --chart-3: 162 100% 31%;
+    --chart-4: 56 84% 60%;
+    --chart-5: 202 100% 35%;
+    --chart-6: 27 100% 42%;
+    --chart-7: 326 41% 64%;
+    --chart-8: 0 0% 20%;
+    --radius: 0.5rem;
+    --font-size-display: 2.25rem;
+    --font-size-h1: 1.875rem;
+    --font-size-h2: 1.5rem;
+    --font-size-h3: 1.25rem;
+    --font-size-h4: 1.125rem;
+    --font-size-body: 0.875rem;
+    --font-size-body-sm: 0.8125rem;
+    --font-size-caption: 0.75rem;
+  }
+
+  /* Dark theme — POS terminal (cashier) + default for back-office */
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 216 100% 64%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 216 100% 64%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 70% 50%;
+    --success-foreground: 0 0% 9%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 9%;
+    --info: 199 89% 60%;
+    --info-foreground: 0 0% 9%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 216 100% 64%;
+    --chart-1: 41 100% 60%;
+    --chart-2: 202 73% 70%;
+    --chart-3: 162 75% 55%;
+    --chart-4: 56 84% 65%;
+    --chart-5: 202 80% 60%;
+    --chart-6: 27 100% 60%;
+    --chart-7: 326 60% 75%;
+    --chart-8: 0 0% 80%;
+  }
+}
+
+/**
+ * Print stylesheet. Thermal-receipt printing happens in a separate window
+ * opened by receiptPrinterService.printBrowserReceipt with embedded @page rules,
+ * so it is unaffected by these.
+ */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+  body {
+    background-color: white !important;
+    color: black !important;
+    margin: 0;
+    padding: 0;
+  }
+  table, tr, td, th { page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+}
+
+/**
+ * Respect the user's reduced-motion preference. Near-instant (not fully 0) so
+ * state-driven transitions still fire their `transitionend` events. Covers
+ * tailwindcss-animate (`animate-in`/`animate-out`) and all CSS transitions.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

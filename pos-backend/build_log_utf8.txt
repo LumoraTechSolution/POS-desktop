@@ -1,0 +1,72 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.lumora:pos-backend >-----------------------
+[INFO] Building pos-backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ pos-backend ---
+[INFO] Deleting D:\Lumora\POS System\backend\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pos-backend ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 20 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ pos-backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 133 source files with javac [debug parameters release 17] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[7,34] package com.lumora.pos.user.entity does not exist
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[8,38] package com.lumora.pos.user.repository does not exist
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[4,34] package com.lumora.pos.user.entity does not exist
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[25,19] cannot find symbol
+  symbol:   class UserRepository
+  location: class com.lumora.pos.employee.service.TimeClockService
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[21,1] cannot find symbol
+  symbol:   class UserRepository
+  location: class com.lumora.pos.employee.service.TimeClockService
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[18,13] cannot find symbol
+  symbol:   class User
+  location: class com.lumora.pos.employee.entity.TimeRecord
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[18,18] cannot find symbol
+  symbol:   class User
+  location: class com.lumora.pos.employee.entity.TimeRecord
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[13,1] cannot find symbol
+  symbol:   class User
+  location: class com.lumora.pos.employee.entity.TimeRecord
+[INFO] 8 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  32.923 s
+[INFO] Finished at: 2026-03-07T12:14:30+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile (default-compile) on project pos-backend: Compilation failure: Compilation failure: 
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[7,34] package com.lumora.pos.user.entity does not exist
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[8,38] package com.lumora.pos.user.repository does not exist
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[4,34] package com.lumora.pos.user.entity does not exist
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[25,19] cannot find symbol
+[ERROR]   symbol:   class UserRepository
+[ERROR]   location: class com.lumora.pos.employee.service.TimeClockService
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/service/TimeClockService.java:[21,1] cannot find symbol
+[ERROR]   symbol:   class UserRepository
+[ERROR]   location: class com.lumora.pos.employee.service.TimeClockService
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[18,13] cannot find symbol
+[ERROR]   symbol:   class User
+[ERROR]   location: class com.lumora.pos.employee.entity.TimeRecord
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[18,18] cannot find symbol
+[ERROR]   symbol:   class User
+[ERROR]   location: class com.lumora.pos.employee.entity.TimeRecord
+[ERROR] /D:/Lumora/POS System/backend/src/main/java/com/lumora/pos/employee/entity/TimeRecord.java:[13,1] cannot find symbol
+[ERROR]   symbol:   class User
+[ERROR]   location: class com.lumora.pos.employee.entity.TimeRecord
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

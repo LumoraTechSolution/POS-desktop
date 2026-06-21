@@ -1,0 +1,13 @@
+# Demo-data profile.
+#
+# Loads the dev/demo seed migrations (demo tenant admin + cashier with known
+# passwords) from the extra db/seed-dev location, ON TOP OF the real schema
+# migrations in db/migration. Activate it alongside another profile when you
+# want a ready-to-use demo login, e.g. SPRING_PROFILES_ACTIVE=prod,demo for the
+# local Docker stack and e2e suite.
+#
+# Real production runs WITHOUT this profile (SPRING_PROFILES_ACTIVE=prod), so the
+# database never gets the known-password demo accounts.
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed-dev

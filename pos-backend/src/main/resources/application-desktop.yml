@@ -1,0 +1,36 @@
+# =====================================================
+# Desktop profile — single-machine Electron install.
+# Activated alongside 'prod' by the launcher:
+#   SPRING_PROFILES_ACTIVE=prod,desktop
+# See docs/desktop-electron-build.md and docs/desktop-product-activation.md.
+# =====================================================
+server:
+  # Loopback only — never expose the till's backend to the LAN in v1.
+  address: 127.0.0.1
+
+app:
+  security:
+    # Login is served over http://127.0.0.1, where Secure cookies don't apply.
+    cookie-secure: false
+  tenant-seed-file: ${APP_TENANT_SEED_FILE:}
+
+  license:
+    # Signed license token, injected by the Electron launcher.
+    token: ${APP_LICENSE_TOKEN:}
+    # Launcher-computed fingerprint — fallback only; the backend recomputes its own.
+    machine-fingerprint: ${APP_MACHINE_FINGERPRINT:}
+    signing:
+      # Ed25519 PUBLIC key (base64 X.509/SPKI), BAKED IN at build time. This must
+      # NOT be overridable by the launcher — its independence is the whole point of
+      # the backend gate. The build replaces the placeholder with the real key
+      # (identical to the one embedded in electron/keys/license-public-key.ts).
+      public-key: MCowBQYDK2VwAyEA29diU0Ca3bFJUeNSBA8WFi+mcv+m/mworWzP8m4sJVM=
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,shutdown

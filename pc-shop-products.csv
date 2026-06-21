@@ -1,0 +1,56 @@
+name,sku,barcode,description,category,brand,basePrice,costPrice,stockQuantity,lowStockThreshold
+Intel Core i5-13400F,CPU-INT-13400F,4001000000017,10-core desktop processor without integrated graphics,Processors,Intel,78000,68000,18,4
+Intel Core i7-13700K,CPU-INT-13700K,4001000000024,16-core unlocked desktop processor,Processors,Intel,145000,128000,10,3
+Intel Core i9-14900K,CPU-INT-14900K,4001000000031,24-core flagship unlocked processor,Processors,Intel,235000,210000,6,2
+AMD Ryzen 5 5600,CPU-AMD-5600,4001000000048,6-core AM4 desktop processor with cooler,Processors,AMD,62000,53000,20,4
+AMD Ryzen 7 7800X3D,CPU-AMD-7800X3D,4001000000055,8-core AM5 gaming processor with 3D V-Cache,Processors,AMD,165000,148000,8,2
+AMD Ryzen 9 7900X,CPU-AMD-7900X,4001000000062,12-core AM5 desktop processor,Processors,AMD,178000,160000,7,2
+NVIDIA GeForce RTX 4060 8GB,GPU-NV-4060,4002000000016,Mainstream 1080p gaming graphics card,Graphics Cards,NVIDIA,135000,120000,12,3
+NVIDIA GeForce RTX 4070 SUPER 12GB,GPU-NV-4070S,4002000000023,High-performance 1440p graphics card,Graphics Cards,NVIDIA,245000,220000,8,2
+AMD Radeon RX 6600 8GB,GPU-AMD-RX6600,4002000000030,Budget 1080p gaming graphics card,Graphics Cards,AMD,95000,84000,10,3
+AMD Radeon RX 7800 XT 16GB,GPU-AMD-RX7800XT,4002000000047,1440p high-refresh graphics card,Graphics Cards,AMD,205000,184000,6,2
+ASUS PRIME B760M-A WiFi,MB-ASUS-B760M,4003000000015,Micro-ATX LGA1700 motherboard with WiFi,Motherboards,ASUS,52000,44000,15,3
+MSI MAG B650 TOMAHAWK WiFi,MB-MSI-B650,4003000000022,ATX AM5 gaming motherboard,Motherboards,MSI,68000,58000,11,3
+Gigabyte B550 AORUS Elite V2,MB-GB-B550,4003000000039,ATX AM4 motherboard,Motherboards,Gigabyte,38000,32000,14,3
+ASUS ROG STRIX X670E-E,MB-ASUS-X670E,4003000000046,High-end ATX AM5 motherboard,Motherboards,ASUS,135000,118000,5,2
+Corsair Vengeance LPX 16GB DDR4 3200,RAM-COR-16D4,4004000000014,16GB (2x8GB) DDR4 desktop memory kit,Memory,Corsair,16000,13000,30,5
+Kingston FURY Beast 32GB DDR5 5600,RAM-KIN-32D5,4004000000021,32GB (2x16GB) DDR5 memory kit,Memory,Kingston,42000,35000,18,4
+Corsair Vengeance 32GB DDR5 6000,RAM-COR-32D5,4004000000038,32GB (2x16GB) DDR5 6000MHz kit,Memory,Corsair,46000,39000,14,4
+Crucial Pro 16GB DDR4 3200,RAM-CRU-16D4,4004000000045,16GB (2x8GB) DDR4 memory kit,Memory,Crucial,15000,12000,22,5
+Samsung 980 1TB NVMe SSD,SSD-SAM-980-1T,4005000000013,1TB PCIe 3.0 M.2 NVMe solid state drive,Storage,Samsung,32000,26000,25,5
+Samsung 990 PRO 2TB NVMe SSD,SSD-SAM-990-2T,4005000000020,2TB PCIe 4.0 M.2 NVMe drive,Storage,Samsung,68000,58000,12,3
+Crucial MX500 500GB SATA SSD,SSD-CRU-MX500,4005000000037,500GB 2.5-inch SATA solid state drive,Storage,Crucial,18000,14500,28,5
+Western Digital Blue 2TB HDD,HDD-WD-BLUE-2T,4005000000044,2TB 7200RPM 3.5-inch hard drive,Storage,Western Digital,22000,18000,20,4
+Seagate Barracuda 1TB HDD,HDD-SEA-BAR-1T,4005000000051,1TB 7200RPM 3.5-inch hard drive,Storage,Seagate,14000,11000,24,5
+Corsair RM750e 750W PSU,PSU-COR-RM750E,4006000000012,750W 80+ Gold fully modular power supply,Power Supplies,Corsair,38000,31000,16,4
+Cooler Master MWE 650W PSU,PSU-CM-MWE650,4006000000029,650W 80+ Bronze power supply,Power Supplies,Cooler Master,24000,19000,18,4
+Corsair RM850x 850W PSU,PSU-COR-RM850X,4006000000036,850W 80+ Gold fully modular power supply,Power Supplies,Corsair,52000,44000,10,3
+NZXT H5 Flow ATX Case,CASE-NZXT-H5,4007000000011,Compact mid-tower ATX case with airflow panel,Cases,NZXT,38000,31000,12,3
+Cooler Master Q300L Case,CASE-CM-Q300L,4007000000028,Micro-ATX mini-tower case,Cases,Cooler Master,15000,12000,16,4
+Corsair 4000D Airflow Case,CASE-COR-4000D,4007000000035,Mid-tower ATX high-airflow case,Cases,Corsair,32000,26000,10,3
+Cooler Master Hyper 212 Black,COOL-CM-H212,4008000000010,Tower air CPU cooler,Cooling,Cooler Master,12000,9000,22,5
+Corsair iCUE H100i Elite,COOL-COR-H100I,4008000000027,240mm liquid CPU cooler,Cooling,Corsair,52000,44000,9,3
+Noctua NH-D15 chromax,COOL-NOC-D15,4008000000034,Premium dual-tower air CPU cooler,Cooling,Cooler Master,38000,32000,7,2
+Dell 24 inch S2425H IPS Monitor,MON-DELL-S2425H,4009000000019,24-inch 1080p 100Hz IPS monitor,Monitors,Dell,55000,46000,14,3
+ASUS TUF VG27AQ 27 inch Monitor,MON-ASUS-VG27AQ,4009000000026,27-inch 1440p 165Hz gaming monitor,Monitors,ASUS,98000,85000,8,2
+BenQ EW3270U 32 inch 4K Monitor,MON-BENQ-EW3270U,4009000000033,32-inch 4K HDR monitor,Monitors,BenQ,145000,128000,5,2
+Acer Nitro 24 inch 144Hz Monitor,MON-ACER-NITRO24,4009000000040,24-inch 1080p 144Hz gaming monitor,Monitors,Acer,52000,43000,12,3
+Logitech G502 HERO Mouse,PER-LOG-G502,4010000000018,Wired gaming mouse with 25K sensor,Peripherals,Logitech,14000,10500,30,5
+Razer BlackWidow V4 Keyboard,PER-RAZ-BWV4,4010000000025,Mechanical RGB gaming keyboard,Peripherals,Razer,28000,22000,14,3
+Logitech MK270 Wireless Combo,PER-LOG-MK270,4010000000032,Wireless keyboard and mouse combo,Peripherals,Logitech,8500,6500,26,5
+Razer Kraken V3 Headset,PER-RAZ-KRAKEN,4010000000049,Wired gaming headset with surround sound,Peripherals,Razer,22000,17000,16,4
+Logitech C920 HD Webcam,ACC-LOG-C920,4011000000017,1080p USB webcam,Accessories,Logitech,28000,22000,15,4
+HDMI 2.1 Cable 2m,ACC-GEN-HDMI2M,4011000000024,High-speed 8K HDMI cable,Accessories,Logitech,1500,800,60,10
+USB-C to USB-C Cable 1m,ACC-GEN-USBC1M,4011000000031,60W USB-C charging and data cable,Accessories,Logitech,1200,600,70,10
+Thermal Paste Tube 4g,ACC-GEN-TPASTE,4011000000048,High-performance CPU thermal compound,Accessories,Cooler Master,2500,1500,40,8
+TP-Link Archer C6 Router,NET-TPL-C6,4012000000016,AC1200 dual-band WiFi router,Networking,TP-Link,9500,7500,18,4
+TP-Link 8-Port Gigabit Switch,NET-TPL-SW8,4012000000023,8-port desktop gigabit ethernet switch,Networking,TP-Link,6500,5000,20,4
+APC Back-UPS 650VA,UPS-APC-650,4013000000015,650VA line-interactive UPS,UPS,APC,22000,18000,14,3
+APC Back-UPS 1100VA,UPS-APC-1100,4013000000022,1100VA line-interactive UPS,UPS,APC,38000,31000,9,3
+Dell Inspiron 15 3530 Laptop,LAP-DELL-INS15,4014000000014,15.6-inch Core i5 8GB 512GB laptop,Laptops,Dell,245000,215000,8,2
+HP Pavilion 14 Laptop,LAP-HP-PAV14,4014000000021,14-inch Ryzen 5 16GB 512GB laptop,Laptops,HP,215000,188000,7,2
+Lenovo IdeaPad Slim 3 Laptop,LAP-LEN-IDEA3,4014000000038,15.6-inch Core i3 8GB 256GB laptop,Laptops,Lenovo,165000,142000,10,3
+ASUS TUF Gaming F15 Laptop,LAP-ASUS-TUFF15,4014000000045,15.6-inch i7 RTX 4060 gaming laptop,Laptops,ASUS,320000,285000,5,2
+Windows 11 Home License,SW-MS-WIN11H,4015000000013,Genuine Windows 11 Home retail license,Software,Intel,42000,36000,30,5
+Microsoft Office 2021 Home,SW-MS-OFF2021,4015000000020,Office Home and Student 2021 license,Software,Intel,38000,33000,25,5
+Gaming PC Ryzen 5 RTX 4060 Build,PC-BUILD-R5-4060,4016000000012,Prebuilt gaming desktop Ryzen 5 16GB RTX 4060,Processors,AMD,385000,340000,4,1

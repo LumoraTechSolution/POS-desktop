@@ -1,0 +1,10 @@
+-- V8: Add version column for Optimistic Locking
+-- Affects all entities extending BaseEntity
+
+ALTER TABLE tenants ADD COLUMN version BIGINT DEFAULT 0 NOT NULL;
+ALTER TABLE permissions ADD COLUMN version BIGINT DEFAULT 0 NOT NULL;
+ALTER TABLE roles ADD COLUMN version BIGINT DEFAULT 0 NOT NULL;
+ALTER TABLE users ADD COLUMN version BIGINT DEFAULT 0 NOT NULL;
+ALTER TABLE categories ADD COLUMN version BIGINT DEFAULT 0 NOT NULL;
+ALTER TABLE brands ADD COLUMN version BIGINT DEFAULT 0 NOT NULL;
+ALTER TABLE products ADD COLUMN version BIGINT DEFAULT 0 NOT NULL;

@@ -1,0 +1,63 @@
+# =====================================================================
+# Lumora POS — Desktop (Electron) build · monorepo root
+# pos-backend/ and pos-frontend/ also have their own .gitignore; this
+# root file adds SECRETS, bundled binaries, and root-level junk.
+# Review `git status` before the first commit — nothing below should
+# ever reach the repo.
+# =====================================================================
+
+# ── SECRETS — never commit ───────────────────────────────────────────
+license-signing-key.PRIVATE.txt
+*.PRIVATE.txt
+**/db.properties          # generated at install time; holds DB creds + jwtSecret
+*.pem
+*.p12
+*.pfx
+*.keystore
+**/.env.local
+**/.env.*.local
+# Scratch notes that contain real credentials/passwords:
+details.md
+start.md
+
+# ── Bundled runtime binaries & installer output ──────────────────────
+# Huge and reproducible — staged locally during the build (see CLAUDE.md
+# "Staging the installer"); the JRE + postgres-bin come from a prior build,
+# the jar + web bundle are produced by mvnw/next. None belong in git.
+pos-frontend/resources/
+pos-frontend/dist/
+pos-frontend/dist-electron/
+*.exe
+*.blockmap
+
+# ── Dependencies / build output ──────────────────────────────────────
+**/node_modules/
+**/.next/
+**/out/
+**/target/
+**/coverage/
+**/test-results/
+**/playwright-report/
+*.tsbuildinfo
+next-env.d.ts
+
+# ── Logs & JVM crash dumps ───────────────────────────────────────────
+*.log
+hs_err_pid*.log
+replay_pid*.log
+**/logs/
+
+# ── Editor / OS ──────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Claude Code project data (keep local; un-ignore .claude/settings.json
+#    explicitly if you want to share harness settings with the team) ──
+.claude/

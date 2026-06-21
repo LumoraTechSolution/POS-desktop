@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/lumora_pos
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    clean-disabled: false
+    validate-on-migrate: false
+    # Local dev wants the demo tenant admin/cashier; load the seed-dev location
+    # too. (Real prod uses application-prod.yml, which keeps only db/migration.)
+    locations: classpath:db/migration,classpath:db/seed-dev
+
+app:
+  cors:
+    # Allow per-shop subdomains in dev (e.g. http://shopa.localhost:3000). Browsers
+    # resolve *.localhost to 127.0.0.1 with no hosts-file edit. Origin *patterns*
+    # are required to combine wildcards with credentials.
+    allowed-origins: http://localhost:3000,http://*.localhost:3000
+  jwt:
+    secret: ${JWT_SECRET:default-dev-secret-change-in-production-must-be-at-least-256-bits-long-for-hs256}
+
+# Dev logging
+logging:
+  level:
+    com.lumora.pos: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
