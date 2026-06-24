@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '@/services/authService';
 import { useAuthStore } from '@/stores/authStore';
@@ -26,7 +26,7 @@ export function PinPad() {
     setPin(prev => prev.slice(0, -1));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     if (pin.length !== 4) {
       toast.error("Please enter a 4-digit PIN");
       return;
@@ -49,14 +49,33 @@ export function PinPad() {
       router.push('/terminal');
     } catch (error: unknown) {
       toast.error((error as { response?: { data?: { message?: string } } })?.response?.data?.message || "Invalid PIN");
-      setPin(""); 
+      setPin("");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [pin, router, setAuth, setPendingPasswordChange]);
 
-  // Auto-submit when 4 digits are entered? 
-  // Let's keep it manual for now to avoid accidental logins but make it easy to hit Enter.
+  // Physical-keyboard support: number-row + numpad digits type the PIN,
+  // Backspace deletes, Enter submits — so a cashier can punch in a PIN without
+  // reaching for the mouse. Auto-submit is intentionally left out to avoid
+  // accidental logins; the on-screen pad and these keys stay in lockstep.
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (isLoading || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        setPin(prev => (prev.length < 4 ? prev + e.key : prev));
+      } else if (e.key === 'Backspace') {
+        e.preventDefault();
+        setPin(prev => prev.slice(0, -1));
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        void handleSubmit();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isLoading, handleSubmit]);
 
   return (
     <div className="flex flex-col items-center space-y-6 max-w-[280px] mx-auto">
