@@ -74,16 +74,19 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'lumora-pos-auth',
-      // sessionStorage: survives page reload within the same tab,
-      // but clears automatically when the browser session ends.
+      // localStorage: the session survives a full app restart so the user stays
+      // signed in on reopen (desktop requirement). This MUST match the backend's
+      // persistent `auth-token` cookie (maxAge 1d, AuthController). If the store
+      // cleared on restart while that cookie persisted, the middleware would
+      // bounce /login -> /overview while AuthGuard thinks you're logged out —
+      // hanging the app on the "Verifying session..." spinner with no way to login.
       storage: createJSONStorage(() =>
-        typeof window !== 'undefined' ? sessionStorage : localStorage
+        typeof window !== 'undefined' ? localStorage : sessionStorage
       ),
       partialize: (state) => ({
         user: state.user,
-        // token is intentionally omitted — access tokens are memory-only to reduce XSS exposure.
-        // refreshToken is kept so the silent-refresh flow works across page reloads within the
-        // same browser session (sessionStorage is cleared when the tab/window is closed).
+        // token (access token) stays memory-only to reduce XSS exposure; the silent
+        // refresh on launch restores it from the persisted refreshToken below.
         refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
         passwordChangeRequired: state.passwordChangeRequired,

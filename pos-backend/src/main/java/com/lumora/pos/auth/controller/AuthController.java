@@ -75,7 +75,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(cookieSecure)
                 .sameSite(cookieSecure ? "Strict" : "Lax")
-                .maxAge(Duration.ofDays(7))
+                .maxAge(Duration.ofDays(1)) // keep in sync with app.jwt.refresh-expiration-ms
                 .path("/")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());

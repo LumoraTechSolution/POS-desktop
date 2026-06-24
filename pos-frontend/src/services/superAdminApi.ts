@@ -88,7 +88,11 @@ superAdminApi.interceptors.response.use(
         const refreshResponse = await axios.post(
           `${API_BASE_URL}/api/v1/super-admin/auth/refresh`,
           { refreshToken },
-          { withCredentials: true }
+          // Explicit timeout: this bare axios call inherits the library default of
+          // 0 (no timeout). Without it, an unresponsive backend hangs the silent
+          // refresh forever and the super-admin console sticks on its loading state
+          // — the same failure mode that hit the tenant refresh in api.ts.
+          { withCredentials: true, timeout: 15000 }
         );
         const data = refreshResponse.data.data;
         setAuth(data.superAdmin, data.accessToken, data.refreshToken);

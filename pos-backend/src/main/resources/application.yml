@@ -61,7 +61,7 @@ app:
   jwt:
     secret: ${JWT_SECRET:lumora-pos-dev-secret-key-for-local-development-only-change-in-production}
     expiration-ms: 86400000 # 24 hours
-    refresh-expiration-ms: 604800000 # 7 days
+    refresh-expiration-ms: 86400000 # 1 day — desktop "stay logged in" window; keep in sync with the auth-token cookie maxAge in AuthController
   # Monthly plan prices used to project MRR on the super-admin dashboard.
   # Adjust here when finance changes the price list — no code deploy needed.
   billing:
